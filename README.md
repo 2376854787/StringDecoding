@@ -27,16 +27,16 @@
     *   `current_str`：一个字符串，用来累加当前层级解码出来的结果。
 3.  从左到右遍历输入的字符串 `s` 的每一个字符：
 
-    *   **如果遇到数字**：
+    *   如果遇到数字：
         *   更新 `current_num`。例如，字符是 '3'，`current_num` 就变成 3。如果下一个字符是 '5'，`current_num` 就变成 `3*10 + 5 = 35`。
         *   **日志**: `遇到数字 'c'，更新 current_num。`
 
-    *   **如果遇到 `[`**：
+    *   如果遇到 `[`：
         *   这是一个“进入下一层”的信号。我们需要**保存当前的状态**。
         *   将 `current_num` 压入 `numStack`。
         *   将 `current_str` 压入 `strStack`。
-        *   **重置** `current_num = 0` 和 `current_str = ""`，为解码这个新层级做准备。
-        *   **日志**: `遇到 '['，保存当前状态 (current_num 和 current_str) 并压栈，然后重置。`
+        *   重置 `current_num = 0` 和 `current_str = ""`，为解码这个新层级做准备。
+        *   日志: `遇到 '['，保存当前状态 (current_num 和 current_str) 并压栈，然后重置。`
 
     *   **如果遇到字母**：
         *   这是最简单的情况，直接将这个字母拼接到 `current_str` 的末尾。
@@ -51,24 +51,3 @@
         *   **日志**: `遇到 ']'，弹出重复次数 k 和上层字符串 prev_str。将 current_str 重复 k 次后与 prev_str 合并。`
 
 4.  遍历结束后，`current_str` 中存储的就是最终的解码结果。
-
-#### 示例演示: `3[a2[c]]`
-
-1.  **`3`**: `current_num` = 3
-2.  **`[`**: `numStack` 入栈 `3`，`strStack` 入栈 `""` (空字符串)。重置 `current_num`=0, `current_str`=""。
-3.  **`a`**: `current_str` = "a"
-4.  **`2`**: `current_num` = 2
-5.  **`[`**: `numStack` 入栈 `2`，`strStack` 入栈 `"a"`。重置 `current_num`=0, `current_str`=""。
-6.  **`c`**: `current_str` = "c"
-7.  **`]`**:
-    *   `numStack` 弹出 `2` (k=2)。
-    *   `strStack` 弹出 `"a"` (prev_str="a")。
-    *   将 `"c"` 重复 2 次，得到 `"cc"`。
-    *   `current_str` 更新为 `prev_str + "cc"`，即 `"a" + "cc"` = `"acc"`。
-8.  **`]`**:
-    *   `numStack` 弹出 `3` (k=3)。
-    *   `strStack` 弹出 `""` (prev_str="")。
-    *   将 `"acc"` 重复 3 次，得到 `"accaccacc"`。
-    *   `current_str` 更新为 `prev_str + "accaccacc"`，即 `"" + "accaccacc"` = `"accaccacc"`。
-
-遍历结束，最终结果是 `"accaccacc"`。
